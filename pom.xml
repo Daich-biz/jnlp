@@ -9,7 +9,7 @@
 
 	<groupId>com.fersoft</groupId>
 	<artifactId>jnlp</artifactId>
-	<version>2.0-SNAPSHOT</version>
+	<version>3.0-SNAPSHOT</version>
 
 	<name>jnlp</name>
   <!-- FIXME change it to the project's website -->
@@ -34,6 +34,24 @@
 		<finalName>${project.artifactId}__V${project.version}</finalName>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>2.0.0-M1</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>checkout</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<connectionType>connection</connectionType>
+					<username>fercp</username>
+					<checkoutDirectory>publish</checkoutDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>
 				<version>1.5.2</version>
@@ -47,11 +65,11 @@
 				</executions>
 				<configuration>
 					<basedir>${project.basedir}</basedir>
-					<filesToInclude>src/main/resources/test.jnlp</filesToInclude>
+					<filesToInclude>publish/test.jnlp</filesToInclude>
 					<replacements>
 						<replacement>
-							<token>#version</token>
-							<value>${project.version}</value>
+							<token>main="true" version=".*/</token>
+							<value>main="true" version="${project.version}"/</value>
 						</replacement>
 					</replacements>
 				</configuration>
@@ -90,7 +108,7 @@
 									</manifestSection>
 								</manifestSections>
 							</archive>
-							<outputDirectory>${project.basedir}</outputDirectory>
+							<outputDirectory>${project.basedir}/publish</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -121,6 +139,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-scm-plugin</artifactId>
@@ -128,7 +147,7 @@
 				<executions>
 					<execution>
 						<phase>package</phase>
-                        <goals>
+						<goals>
 							<goal>checkin</goal>
 						</goals>
 					</execution>
