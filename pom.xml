@@ -16,7 +16,7 @@
 	<url>http://www.example.com</url>
 
 	<scm>
-		<connection>scm:git:https://github.com/BorisDaich/vz-public-apps.git</connection>
+		<connection>scm:git:https://github.com/fercp/fercp.github.io.git</connection>
 	</scm>
 
 	<properties>
