@@ -7,7 +7,7 @@ simple jnlp app
 
 2. Produce and sign jar file with
 
-   ``mvn  -Djarsigner.storepass=password -Djarsigner.keypass=password clean compile``
+   ``mvn  -Djarsigner.storepass=password -Djarsigner.keypass=password -Dgithub-user clean package``
    
 3. To update version change version in pom.xml and jnlp file
 
