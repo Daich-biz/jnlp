@@ -29,13 +29,40 @@
 	<build>
 		<finalName>${project.artifactId}__V${project.version}</finalName>
 		<plugins>
-
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.2</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<basedir>${project.basedir}</basedir>
+					<filesToInclude>src/main/resources/test.jnlp</filesToInclude>
+					<replacements>
+						<replacement>
+							<token>#version</token>
+							<value>${project.version}</value>
+						</replacement>
+					</replacements>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 
 				<executions>
 					<execution>
+						<id>default-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
 						<configuration>
 							<excludes>
 								<exclude>resources/*</exclude>
@@ -50,11 +77,11 @@
 								</manifestEntries>
 								<manifestSections>
 									<manifestSection>
-										<name>${executableName}</name>
+										<name>${project.build.finalName}</name>
 										<manifestEntries>
 											<Project-Name>${project.artifactId}</Project-Name>
 											<Project-Version>${project.version}</Project-Version>
-											<Project-Built-Date>${build.timestamp}</Project-Built-Date>
+											<Project-Built-Date>${maven.build.timestamp}</Project-Built-Date>
 										</manifestEntries>
 									</manifestSection>
 								</manifestSections>
@@ -72,8 +99,6 @@
 				<configuration>
 					<keystore>${project.basedir}/src/main/resources/jnlp.jks</keystore>
 					<alias>jnlpstore</alias>
-					<storepass>password</storepass>
-					<keypass>password</keypass>
 				</configuration>
 				<executions>
 
